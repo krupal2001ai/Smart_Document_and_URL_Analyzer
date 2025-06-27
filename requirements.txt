@@ -31,4 +31,3 @@ aiohttp>=3.9.0
 python-dotenv>=1.0.0
 
 # For Windows compatibility (included but won't affect other systems)
-asyncio-compat>=0.1.2
