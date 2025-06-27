@@ -30,4 +30,4 @@ aiohttp>=3.9.0
 # Additional utilities
 python-dotenv>=1.0.0
 
-# For Windows compatibility (included but won't affect other systems)
+psutil>=5.9.0
