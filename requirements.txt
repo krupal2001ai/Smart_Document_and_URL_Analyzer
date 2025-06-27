@@ -21,7 +21,7 @@ playwright>=1.40.0
 validators>=0.22.0
 
 # YouTube transcript extraction
-youtube-transcript-api>=0.6.1
+youtube_transcript_api>=0.6.0
 
 # HTTP requests and async support
 requests>=2.31.0
