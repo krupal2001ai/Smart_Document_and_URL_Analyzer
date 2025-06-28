@@ -26,9 +26,11 @@ youtube_transcript_api>=0.6.0
 # HTTP requests and async support
 requests>=2.31.0
 aiohttp>=3.9.0
-unstructured
+
 
 # Additional utilities
 python-dotenv>=1.0.0
 
 psutil>=5.9.0
+transformers
+unstructured[all]
