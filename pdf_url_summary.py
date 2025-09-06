@@ -254,6 +254,10 @@
 # else:
 #     st.warning("Please enter both Groq and Cohere API keys.")
 
+
+
+
+
 import streamlit as st
 import tempfile
 import os
@@ -271,8 +275,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import YoutubeLoader
 from langchain.docstore.document import Document
-# Corrected import for get_transcript
-from youtube_transcript_api import get_transcript, NoTranscriptFound, TranscriptsDisabled
+from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, TranscriptsDisabled
 
 # --- Session State Initialization ---
 if 'store' not in st.session_state:
@@ -348,13 +351,12 @@ def extract_youtube_id(url):
 def get_youtube_transcript(video_id):
     """Get YouTube transcript with user-friendly error handling."""
     try:
-        # Corrected function call
-        transcript_data = get_transcript(video_id, languages=['en'])
+        transcript_data = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
         transcript_text = ' '.join([item['text'] for item in transcript_data])
         return transcript_text
     except (NoTranscriptFound, TranscriptsDisabled):
         st.warning("This YouTube video does not have captions available. "
-                   "Captions may be disabled, not yet generated, or the video is private/restricted.")
+                  "Captions may be disabled, not yet generated, or the video is private/restricted.")
         return None
     except Exception as e:
         st.warning(f"Unable to retrieve captions for this video: {str(e)}")
@@ -443,7 +445,7 @@ if groq_api_key and cohere_api_key:
         
         else:
             st.subheader("Enter URL")
-            url_input = st.text_input("Enter URL (YouTube or Website):")
+            url_input = st.text_input("Enter URL ( Website):")
             if url_input and st.button("Process URL"):
                 with st.spinner("Processing URL..."):
                     video_id = extract_youtube_id(url_input)
@@ -462,13 +464,13 @@ if groq_api_key and cohere_api_key:
                             documents = loader.load()
                             if not documents or not documents[0].page_content.strip():
                                 st.warning("No content could be extracted from this website. "
-                                           "The page may be dynamically loaded, restricted, or empty.")
+                                         "The page may be dynamically loaded, restricted, or empty.")
                                 st.stop()
                             else:
                                 st.success("Website content extracted successfully!")
                         except Exception as e:
                             st.warning(f"Unable to process website content: {str(e)}. "
-                                       "Try a different URL or check if the website is accessible.")
+                                      "Try a different URL or check if the website is accessible.")
                             st.stop()
         
         # Process Documents and Setup RAG
@@ -510,7 +512,3 @@ if groq_api_key and cohere_api_key:
         st.error("Failed to initialize embeddings. Check Cohere API key.")
 else:
     st.warning("Please enter both Groq and Cohere API keys.")
-
-
-    
-
